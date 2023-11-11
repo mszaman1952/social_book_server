@@ -16,9 +16,9 @@ app.use(express.urlencoded({ extended : true }));
 // implement application middleware 
 app.use(cors());
 app.use(helmet());
-app.use(morgan());
+app.use(morgan("dev"));
 app.use(hpp());
-
+ 
 // dotEnv config
 dotEnv.config();
 
