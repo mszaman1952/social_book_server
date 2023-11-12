@@ -26,6 +26,7 @@ dotEnv.config();
 // express ratelimiter import and implementation
 const limit = require('express-rate-limit');
 const { errorResponse } = require('./src/controllers/responseController');
+const router = require('./src/routes/api');
 const limiter = limit({
     windowMs : 1 * 60 * 1000,
     max : 20,
@@ -36,6 +37,7 @@ app.use(limiter);
 
 
 // router implement 
+app.use( router)
 
 // api testing 
 app.get('/test', (req, res) => {
