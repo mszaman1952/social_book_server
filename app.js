@@ -5,6 +5,7 @@ const cors = require('cors');
 const hpp = require('hpp');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const createError = require('http-errors')
 
 // create express instance 
 const app = express();
@@ -24,6 +25,7 @@ dotEnv.config();
 
 // express ratelimiter import and implementation
 const limit = require('express-rate-limit');
+const { errorResponse } = require('./src/controllers/responseController');
 const limiter = limit({
     windowMs : 1 * 60 * 1000,
     max : 20,
@@ -32,21 +34,28 @@ const limiter = limit({
 
 app.use(limiter);
 
+
 // router implement 
 
-// client error router 
-app.use((req, res, next) =>{
-    res.status(404).json({
-        status : "Failed",
-        data : "Route Not !Found!!!"
+// api testing 
+app.get('/test', (req, res) => {
+    res.status(200).send({
+        message : 'API Testing is Working Fine'
     });
-    next();
-});
+});  
 
-// server side error handling and all error handling
+// client error handling  
+app.use((req, res, next) => { 
+    next(createError(404, 'Route Not Found'));
+})
+
+// server error handling -> finally all the error here is
 app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).send('Something broke!'); 
+   
+    return errorResponse(res, {
+        statusCode : err.status,
+        message : err.message
+    })
 })
 
 module.exports = {

@@ -1,7 +1,12 @@
 const port = process.env.PORT || 5000;
 const dbUri = process.env.DATABASE_URL;
-
+const jsonKey = process.env.JWT_SECRET;
+const smtpUsername = process.env.SMTP_USERNAM;
+const smtpPassword = process.env.SMTP_PASSWORD;
 module.exports = {
     port,
-    dbUri
+    dbUri,
+    jsonKey,
+    smtpUsername,
+    smtpPassword
 }
